@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Industrial Manager</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Production Entry Form</h2>
+    <form method="post" action="/submit">
+        <label>Date:</label>
+        <input type="date" name="date" required><br><br>
+
+        <label>Shift:</label>
+        <select name="shift" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select><br><br>
+
+        <label>Operation ID:</label>
+        <input list="ops" name="operation_id" required>
+        <datalist id="ops">
+            {% for op in operation_ids %}
+                <option value="{{ op }}">
+            {% endfor %}
+        </datalist><br><br>
+
+        <label>From Time:</label>
+        <input type="time" name="from_time" required><br><br>
+
+        <label>To Time:</label>
+        <input type="time" name="to_time" required><br><br>
+
+        <label>Quantity:</label>
+        <input type="number" name="quantity" min="1" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
