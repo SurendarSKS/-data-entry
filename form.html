@@ -14,7 +14,7 @@
 
     table {
       width: 100%;
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
       border-collapse: collapse;
     }
@@ -58,8 +58,8 @@
   <h2>Production Data Entry Form</h2>
 
   <form id="dataForm">
-    <!-- Hidden ENTRY NUMBER (auto in Sheet) -->
-    <input type="hidden" name="entry_number" value="AUTO_GENERATE">
+    <!-- Hidden ENTRY NUMBER (auto-generated in Google Sheets) -->
+    <input type="hidden" name="entry_number" value="AUTO">
 
     <table>
       <tr>
@@ -70,7 +70,7 @@
         <th>OPERATION ID</th>
         <th>FROM</th>
         <th>TO</th>
-        <th>QTY</th>
+        <th>QUANTITY</th>
       </tr>
       <tr>
         <td><input type="date" name="date" required></td>
@@ -94,7 +94,7 @@
   </form>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxMf6o7uAZjh1Sesy7y6w_nv1p4gLCRb63vizOBfhEcSfQUcVRgbJCZHYxFGHMNsJENmA/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxIZSDk7_o4dpHsOz-JbRi0-l_o-u4y4zsQrS1Bal7ubvg1MhI2ehd8FmJlQgHTaucCug/exec';
     const form = document.getElementById('dataForm');
 
     form.addEventListener('submit', e => {
