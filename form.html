@@ -1,31 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Data Entry Form</title>
+  <title>Production Data Entry</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #ccc;
+    }
+    input[type="text"], input[type="number"], input[type="date"], input[type="time"], select {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-  <form action="https://script.google.com/macros/s/AKfycbwpi2H4yLnQF9LaiaBHWIlBrBn7LiIuwLvxElj488ICURWJ0v8OzWOhsGEvhhKtuyCwIQ/exec" method="post">
-    <input type="text" name="operator_name" placeholder="Operator ID" required>
-    <input type="date" name="date" required>
-    
-    <select name="shift_number" required>
-      <option value="" disabled selected>Select Shift</option>
-      <option value="1">Shift 1</option>
-      <option value="2">Shift 2</option>
-      <option value="3">Shift 3</option>
-    </select>
 
-    <input type="text" name="operation_id" placeholder="Operation ID" required>
-    
-    <label>From Time:</label>
-    <input type="time" name="from_time" required>
-
-    <label>To Time:</label>
-    <input type="time" name="to_time" required>
-
-    <input type="number" name="quantity" placeholder="Quantity Produced" min="0" required>
-
+  <h2>Production Data Entry Form</h2>
+  <form action="https://script.google.com/macros/s/AKfycbwpi2H4yLnQF9LaiaBHWIlBrBn7LiIuwLvxElj488ICURWJ0v8OzWOhsGEvhhKtuyCwIQ/exec" method="POST">
+    <table>
+      <tr>
+        <th>ENTRY NUMBER</th>
+        <th>DATE</th>
+        <th>SHIFT NUMBER</th>
+        <th>OPERATOR ID</th>
+        <th>OPERATION ID</th>
+        <th>FROM</th>
+        <th>TO</th>
+        <th>QUANTITY</th>
+      </tr>
+      <tr>
+        <td><input type="text" name="entry_number" required></td>
+        <td><input type="date" name="date" required></td>
+        <td>
+          <select name="shift_number" required>
+            <option value="">--Select--</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </td>
+        <td><input type="text" name="operator_id" required></td>
+        <td><input type="text" name="operation_id" required></td>
+        <td><input type="time" name="from_time" required></td>
+        <td><input type="time" name="to_time" required></td>
+        <td><input type="number" name="quantity" min="0" required></td>
+      </tr>
+    </table>
     <button type="submit">Submit</button>
   </form>
+
 </body>
 </html>
