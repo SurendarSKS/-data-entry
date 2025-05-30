@@ -2,103 +2,71 @@
 <html>
 <head>
   <title>Production Data Entry</title>
-  <style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid #999;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #ccc;
-    }
-    input, select {
-      width: 100%;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-    #entry_number {
-      display: none;
-    }
-  </style>
 </head>
 <body>
+  <h2>Production Entry Form</h2>
+  <form id="dataForm">
+    <input type="hidden" name="entry_number" id="entry_number" />
 
-<h2>Production Data Entry Form</h2>
+    <label for="date">DATE:</label>
+    <input type="date" name="date" required><br><br>
 
-<form id="entryForm">
-  <table>
-    <tr>
-      <!-- ENTRY NUMBER is hidden -->
-      <th style="display:none;">ENTRY NUMBER</th>
-      <th>DATE</th>
-      <th>SHIFT NUMBER</th>
-      <th>MACHINE ID</th>
-      <th>OPERATOR ID</th>
-      <th>OPERATION ID</th>
-      <th>FROM</th>
-      <th>TO</th>
-      <th>QUANTITY</th>
-    </tr>
-    <tr>
-      <td style="display:none;"><input type="text" id="entry_number" name="entry_number" readonly></td>
-      <td><input type="date" id="date" name="date" required></td>
-      <td>
-        <select name="shift_number" required>
-          <option value="">--Select--</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-      </td>
-      <td><input type="text" name="machine_id" required></td>
-      <td><input type="text" name="operator_id" required></td>
-      <td><input type="text" name="operation_id" required></td>
-      <td><input type="time" name="from_time" required></td>
-      <td><input type="time" name="to_time" required></td>
-      <td><input type="number" name="quantity" min="0" required></td>
-    </tr>
-  </table>
-  <button type="submit">Submit</button>
-</form>
+    <label for="shift_number">SHIFT NUMBER:</label>
+    <select name="shift_number" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+    </select><br><br>
 
-<script>
-  // Set today's date
-  document.getElementById('date').valueAsDate = new Date();
+    <label for="machine_id">MACHINE ID:</label>
+    <input type="text" name="machine_id" required><br><br>
 
-  // Get last entry number
-  fetch('https://script.google.com/macros/s/AKfycbzYlMLwUxc2cvZsa8kZCddMKfT_-WYHLMBQVJweqy-A8DvOXeqJkStRcPynp6utZsn5ig/exec')
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('entry_number').value = data.lastEntry + 1;
+    <label for="operator_id">OPERATOR ID:</label>
+    <input type="text" name="operator_id" required><br><br>
+
+    <label for="operation_id">OPERATION ID:</label>
+    <input type="text" name="operation_id" required><br><br>
+
+    <label for="from_time">FROM:</label>
+    <input type="time" name="from_time" required><br><br>
+
+    <label for="to_time">TO:</label>
+    <input type="time" name="to_time" required><br><br>
+
+    <label for="quantity">QUANTITY:</label>
+    <input type="number" name="quantity" required><br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    // Load latest entry number and auto-fill hidden field
+    fetch('https://script.google.com/macros/s/AKfycbxIZSDk7_o4dpHsOz-JbRi0-l_o-u4y4zsQrS1Bal7ubvg1MhI2ehd8FmJlQgHTaucCug/exec?action=getLastEntry')
+      .then(response => response.json())
+      .then(data => {
+        const nextEntry = data.lastEntry + 1;
+        document.getElementById('entry_number').value = nextEntry;
+      });
+
+    // Handle form submission
+    document.getElementById('dataForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const formObject = {};
+      formData.forEach((value, key) => formObject[key] = value);
+
+      fetch('https://script.google.com/macros/s/AKfycbxIZSDk7_o4dpHsOz-JbRi0-l_o-u4y4zsQrS1Bal7ubvg1MhI2ehd8FmJlQgHTaucCug/exec', {
+        method: 'POST',
+        body: new URLSearchParams(formObject)
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert("Form submitted successfully!");
+        location.reload();
+      })
+      .catch(error => {
+        alert("Error: " + error.message);
+      });
     });
-
-  // Submit form data
-  document.getElementById('entryForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.text())
-    .then(response => {
-      alert('Form submitted successfully!');
-      location.reload();
-    })
-    .catch(err => {
-      alert('Error submitting form');
-      console.error(err);
-    });
-  });
-</script>
-
+  </script>
 </body>
 </html>
