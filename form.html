@@ -1,70 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Production Data Entry</title>
+  <title>Production Data Entry Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px 12px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    input, select {
+      width: 100%;
+      padding: 6px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Production Entry Form</h2>
-  <form id="dataForm">
-    <input type="hidden" name="entry_number" id="entry_number" />
-
-    <label for="date">DATE:</label>
-    <input type="date" name="date" required><br><br>
-
-    <label for="shift_number">SHIFT NUMBER:</label>
-    <select name="shift_number" required>
-      <option value="1">1</option>
-      <option value="2">2</option>
-    </select><br><br>
-
-    <label for="machine_id">MACHINE ID:</label>
-    <input type="text" name="machine_id" required><br><br>
-
-    <label for="operator_id">OPERATOR ID:</label>
-    <input type="text" name="operator_id" required><br><br>
-
-    <label for="operation_id">OPERATION ID:</label>
-    <input type="text" name="operation_id" required><br><br>
-
-    <label for="from_time">FROM:</label>
-    <input type="time" name="from_time" required><br><br>
-
-    <label for="to_time">TO:</label>
-    <input type="time" name="to_time" required><br><br>
-
-    <label for="quantity">QUANTITY:</label>
-    <input type="number" name="quantity" required><br><br>
-
-    <input type="submit" value="Submit">
+  <h2>Production Data Entry Form</h2>
+  <form id="data-form">
+    <table>
+      <tr>
+        <th>DATE</th>
+        <th>SHIFT NUMBER</th>
+        <th>MACHINE ID</th>
+        <th>FROM</th>
+        <th>TO</th>
+        <th>QUANTITY</th>
+      </tr>
+      <tr>
+        <td><input type="date" name="date" required></td>
+        <td>
+          <select name="shift" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </td>
+        <td><input type="text" name="machine" required></td>
+        <td><input type="time" name="from" required></td>
+        <td><input type="time" name="to" required></td>
+        <td><input type="number" name="quantity" required></td>
+      </tr>
+    </table>
+    <br>
+    <button type="submit">Submit</button>
   </form>
 
   <script>
-    // Load latest entry number and auto-fill hidden field
-    fetch('https://script.google.com/macros/s/AKfycbxIZSDk7_o4dpHsOz-JbRi0-l_o-u4y4zsQrS1Bal7ubvg1MhI2ehd8FmJlQgHTaucCug/exec?action=getLastEntry')
-      .then(response => response.json())
-      .then(data => {
-        const nextEntry = data.lastEntry + 1;
-        document.getElementById('entry_number').value = nextEntry;
-      });
-
-    // Handle form submission
-    document.getElementById('dataForm').addEventListener('submit', function (e) {
+    document.getElementById("data-form").addEventListener("submit", function(e) {
       e.preventDefault();
       const formData = new FormData(this);
       const formObject = {};
-      formData.forEach((value, key) => formObject[key] = value);
+      formData.forEach((value, key) => {
+        formObject[key] = value;
+      });
 
-      fetch('https://script.google.com/macros/s/AKfycbxIZSDk7_o4dpHsOz-JbRi0-l_o-u4y4zsQrS1Bal7ubvg1MhI2ehd8FmJlQgHTaucCug/exec', {
-        method: 'POST',
+      fetch("https://script.google.com/macros/s/AKfycbxIZSDk7_o4dpHsOz-JbRi0-l_o-u4y4zsQrS1Bal7ubvg1MhI2ehd8FmJlQgHTaucCug/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: new URLSearchParams(formObject)
-      })
-      .then(response => response.text())
-      .then(result => {
+      }).then(() => {
         alert("Form submitted successfully!");
-        location.reload();
-      })
-      .catch(error => {
-        alert("Error: " + error.message);
+        document.getElementById("data-form").reset();
+      }).catch(error => {
+        alert("Error submitting form: " + error.message);
       });
     });
   </script>
