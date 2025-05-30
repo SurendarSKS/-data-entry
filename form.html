@@ -3,32 +3,46 @@
 <head>
   <title>Production Data Entry</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
     table {
       border-collapse: collapse;
       width: 100%;
+      max-width: 1000px;
+      margin: auto;
     }
     th, td {
       border: 1px solid #999;
-      padding: 8px;
+      padding: 10px;
       text-align: center;
     }
     th {
-      background-color: #ccc;
+      background-color: #f2f2f2;
     }
-    input[type="text"], input[type="number"], input[type="date"], input[type="time"], select {
+    input, select, button {
+      padding: 8px;
       width: 100%;
       box-sizing: border-box;
     }
     button {
-      margin-top: 10px;
-      padding: 10px 20px;
+      margin-top: 15px;
       font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
-  <h2>Production Data Entry Form</h2>
+  <h2 style="text-align:center;">Production Data Entry Form</h2>
+  
   <form action="https://script.google.com/macros/s/AKfycbwpi2H4yLnQF9LaiaBHWIlBrBn7LiIuwLvxElj488ICURWJ0v8OzWOhsGEvhhKtuyCwIQ/exec" method="POST">
     <table>
       <tr>
@@ -47,9 +61,9 @@
         <td>
           <select name="shift_number" required>
             <option value="">--Select--</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            <option value="Shift A">Shift A</option>
+            <option value="Shift B">Shift B</option>
+            <option value="Shift C">Shift C</option>
           </select>
         </td>
         <td><input type="text" name="operator_id" required></td>
@@ -59,7 +73,9 @@
         <td><input type="number" name="quantity" min="0" required></td>
       </tr>
     </table>
-    <button type="submit">Submit</button>
+    <div style="text-align:center;">
+      <button type="submit">Submit</button>
+    </div>
   </form>
 
 </body>
