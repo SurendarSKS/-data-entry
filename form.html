@@ -3,84 +3,96 @@
 <head>
   <title>Production Data Entry</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
     table {
       border-collapse: collapse;
       width: 100%;
-      max-width: 1000px;
-      margin: auto;
     }
     th, td {
       border: 1px solid #999;
-      padding: 10px;
+      padding: 8px;
       text-align: center;
     }
     th {
-      background-color: #f2f2f2;
+      background-color: #ccc;
     }
-    input, select, button {
-      padding: 8px;
+    input, select {
       width: 100%;
       box-sizing: border-box;
     }
     button {
-      margin-top: 15px;
+      margin-top: 10px;
+      padding: 10px 20px;
       font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
-  <h2 style="text-align:center;">Production Data Entry Form</h2>
-  
-  <form action="https://script.google.com/macros/s/AKfycbwpi2H4yLnQF9LaiaBHWIlBrBn7LiIuwLvxElj488ICURWJ0v8OzWOhsGEvhhKtuyCwIQ/exec" method="POST">
-    <table>
-      <tr>
-        <th>DATE</th>
-        <th>SHIFT NUMBER</th>
-        <th>OPERATOR ID</th>
-        <th>OPERATION ID</th>
-        <th>FROM</th>
-        <th>TO</th>
-        <th>QUANTITY</th>
-      </tr>
-      <tr>
-        <td><input type="date" id="dateField" name="date" required></td>
-        <td>
-          <select name="shift_number" required>
-            <option value="">--Select--</option>
-            <option value="Shift A">Shift A</option>
-            <option value="Shift B">Shift B</option>
-            <option value="Shift C">Shift C</option>
-          </select>
-        </td>
-        <td><input type="text" name="operator_id" required></td>
-        <td><input type="text" name="operation_id" required></td>
-        <td><input type="time" name="from_time" required></td>
-        <td><input type="time" name="to_time" required></td>
-        <td><input type="number" name="quantity" min="0" required></td>
-      </tr>
-    </table>
-    <div style="text-align:center;">
-      <button type="submit">Submit</button>
-    </div>
-  </form>
+<h2>Production Data Entry Form</h2>
 
-  <script>
-    // Set today's date in the date input
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('dateField').value = today;
-  </script>
+<form id="entryForm">
+  <table>
+    <tr>
+      <th>ENTRY NUMBER</th>
+      <th>DATE</th>
+      <th>SHIFT NUMBER</th>
+      <th>OPERATOR ID</th>
+      <th>OPERATION ID</th>
+      <th>FROM</th>
+      <th>TO</th>
+      <th>QUANTITY</th>
+    </tr>
+    <tr>
+      <td><input type="text" id="entry_number" name="entry_number" readonly></td>
+      <td><input type="date" id="date" name="date" required></td>
+      <td>
+        <select name="shift_number" required>
+          <option value="">--Select--</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </td>
+      <td><input type="text" name="operator_id" required></td>
+      <td><input type="text" name="operation_id" required></td>
+      <td><input type="time" name="from_time" required></td>
+      <td><input type="time" name="to_time" required></td>
+      <td><input type="number" name="quantity" min="0" required></td>
+    </tr>
+  </table>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  // Set today's date
+  document.getElementById('date').valueAsDate = new Date();
+
+  // Get entry number from Google Sheets
+  fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec?action=getLastEntry')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('entry_number').value = data.lastEntry + 1;
+    });
+
+  // Submit form data
+  document.getElementById('entryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.text())
+    .then(response => {
+      alert('Form submitted successfully!');
+      location.reload();
+    })
+    .catch(err => {
+      alert('Error submitting form');
+      console.error(err);
+    });
+  });
+</script>
 
 </body>
 </html>
