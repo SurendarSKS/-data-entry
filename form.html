@@ -74,7 +74,7 @@
   document.getElementById('date').valueAsDate = new Date();
 
   // Get last entry number
-  fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec?action=getLastEntry')
+  fetch('https://script.google.com/macros/s/AKfycbzYlMLwUxc2cvZsa8kZCddMKfT_-WYHLMBQVJweqy-A8DvOXeqJkStRcPynp6utZsn5ig/exec')
     .then(res => res.json())
     .then(data => {
       document.getElementById('entry_number').value = data.lastEntry + 1;
