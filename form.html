@@ -46,7 +46,6 @@
   <form action="https://script.google.com/macros/s/AKfycbwpi2H4yLnQF9LaiaBHWIlBrBn7LiIuwLvxElj488ICURWJ0v8OzWOhsGEvhhKtuyCwIQ/exec" method="POST">
     <table>
       <tr>
-        <!-- Removed ENTRY NUMBER -->
         <th>DATE</th>
         <th>SHIFT NUMBER</th>
         <th>OPERATOR ID</th>
@@ -56,7 +55,7 @@
         <th>QUANTITY</th>
       </tr>
       <tr>
-        <td><input type="date" name="date" required></td>
+        <td><input type="date" id="dateField" name="date" required></td>
         <td>
           <select name="shift_number" required>
             <option value="">--Select--</option>
@@ -76,6 +75,12 @@
       <button type="submit">Submit</button>
     </div>
   </form>
+
+  <script>
+    // Set today's date in the date input
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dateField').value = today;
+  </script>
 
 </body>
 </html>
