@@ -24,6 +24,9 @@
       padding: 10px 20px;
       font-size: 16px;
     }
+    #entry_number {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -33,9 +36,11 @@
 <form id="entryForm">
   <table>
     <tr>
-      <th>ENTRY NUMBER</th>
+      <!-- ENTRY NUMBER is hidden -->
+      <th style="display:none;">ENTRY NUMBER</th>
       <th>DATE</th>
       <th>SHIFT NUMBER</th>
+      <th>MACHINE ID</th>
       <th>OPERATOR ID</th>
       <th>OPERATION ID</th>
       <th>FROM</th>
@@ -43,7 +48,7 @@
       <th>QUANTITY</th>
     </tr>
     <tr>
-      <td><input type="text" id="entry_number" name="entry_number" readonly></td>
+      <td style="display:none;"><input type="text" id="entry_number" name="entry_number" readonly></td>
       <td><input type="date" id="date" name="date" required></td>
       <td>
         <select name="shift_number" required>
@@ -53,6 +58,7 @@
           <option value="3">3</option>
         </select>
       </td>
+      <td><input type="text" name="machine_id" required></td>
       <td><input type="text" name="operator_id" required></td>
       <td><input type="text" name="operation_id" required></td>
       <td><input type="time" name="from_time" required></td>
@@ -67,7 +73,7 @@
   // Set today's date
   document.getElementById('date').valueAsDate = new Date();
 
-  // Get entry number from Google Sheets
+  // Get last entry number
   fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec?action=getLastEntry')
     .then(res => res.json())
     .then(data => {
@@ -78,7 +84,7 @@
   document.getElementById('entryForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData(this);
-    fetch('https://script.google.com/macros/s/AKfycbySWpsAs68R6sTZXSzuyeU8cPTDWP_jdsVZj4KUdYcdDzqKb2xw3iqS7Y58nAnki_aEuw/exec', {
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec', {
       method: 'POST',
       body: formData
     })
