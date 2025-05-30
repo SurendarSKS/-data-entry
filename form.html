@@ -1,40 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AI Industrial Manager</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <h2>Production Entry Form</h2>
-    <form method="post" action="/submit">
-        <label>Date:</label>
-        <input type="date" name="date" required><br><br>
+<form id="productionForm">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="date" name="date" required>
+  <select name="shift">
+    <option value="Shift A">Shift A</option>
+    <option value="Shift B">Shift B</option>
+  </select>
+  <input type="text" name="operator" placeholder="Operator" required>
+  <input type="text" name="component" placeholder="Component" required>
+  <button type="submit">Submit</button>
+</form>
 
-        <label>Shift:</label>
-        <select name="shift" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select><br><br>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwpi2H4yLnQF9LaiaBHWIlBrBn7LiIuwLvxElj488ICURWJ0v8OzWOhsGEvhhKtuyCwIQ/exec';
 
-        <label>Operation ID:</label>
-        <input list="ops" name="operation_id" required>
-        <datalist id="ops">
-            {% for op in operation_ids %}
-                <option value="{{ op }}">
-            {% endfor %}
-        </datalist><br><br>
 
-        <label>From Time:</label>
-        <input type="time" name="from_time" required><br><br>
+  document.getElementById('productionForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
 
-        <label>To Time:</label>
-        <input type="time" name="to_time" required><br><br>
-
-        <label>Quantity:</label>
-        <input type="number" name="quantity" min="1" required><br><br>
-
-        <input type="submit" value="Submit">
-    </form>
-</body>
-</html>
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    .then(response => alert('Submitted successfully!'))
+    .catch(error => alert('Error! Try again.'));
+  });
+</script>
